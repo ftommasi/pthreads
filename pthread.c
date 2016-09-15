@@ -34,18 +34,21 @@ int main(int argc, char** argv){
     arg_array[i] = args;
     threads[i] = id;
     snprintf(arg_array[i].arg2, bufSize, "This is thread %d", i);
-    int create_error= pthread_create(threads[i],NULL,thread_entry,&args);
+    int create_error= pthread_create(threads[i],NULL,thread_entry,(void*)&arg_array[i]);
     if(create_error != 0){
       printf("ERROR IN CREATE\n") ;
     }
 
-    int join_error= pthread_join(id,NULL);
-    if(join_error!=0){
-      printf("ERROR IN JOIN\n");
-    }
 
   }
-    //printf("MAIN: arg1 %d arg2 %s\n",args.arg1,args.arg2);
+  for( i = 0; i < n; i++ ){
+   int join_error= pthread_join(threads[i],NULL);
+   if(join_error!=0){
+      printf("ERROR IN JOIN\n");
+    }
+  }
+   
+   //printf("MAIN: arg1 %d arg2 %s\n",args.arg1,args.arg2);
      //  printf("ret is %d in main\n",args.ret);
     //free(args.arg2);
   return 0;
